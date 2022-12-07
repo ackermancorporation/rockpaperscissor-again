@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock paper scissor</title>
+</head>
+<body>
+
+<style>
+
+
+/* CSS */
+.button-19 {
+  appearance: button;
+  background-color: #1899D6;
+  border: solid transparent;
+  border-radius: 16px;
+  border-width: 0 0 4px;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  cursor: pointer;
+  display: inline-block;
+  font-family: din-round,sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: .8px;
+  line-height: 20px;
+  margin: 0;
+  outline: none;
+  overflow: visible;
+  padding: 13px 16px;
+  text-align: center;
+  text-transform: uppercase;
+  touch-action: manipulation;
+  transform: translateZ(0);
+  transition: filter .2s;
+  user-select: none;
+  -webkit-user-select: none;
+  vertical-align: middle;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.button-19:after {
+  background-clip: padding-box;
+  background-color: #1CB0F6;
+  border: solid transparent;
+  border-radius: 16px;
+  border-width: 0 0 4px;
+  bottom: -4px;
+  content: "";
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: -1;
+}
+
+.button-19:main,
+.button-19:focus {
+  user-select: auto;
+}
+
+.button-19:hover:not(:disabled) {
+  filter: brightness(1.1);
+  -webkit-filter: brightness(1.1);
+}
+
+.button-19:disabled {
+  cursor: auto;
+}
+    .playSpace{
+        height:20em;
+        width:30em;
+        border-radius:10px;
+        border:solid 1px;
+        margin-bottom:30px;
+        display:flex;
+        flex-direction: column;
+        align-items: center;
+        overflow:auto;
+    }
+
+</style>
+<div style="display:flex;align-items:center;width:100%;justify-content: space-between;flex-direction: column;font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; ">
+    <h1 style ="margin:0px;border:0px;">ROCK PAPER SCISSOR</h1>
+    <p style="margin:0px;padding:0px;">Choose your move by clicking.</p>
+    <p style="margin:0px;padding:0px;margin-bottom:20px;">You are playing against a machine 🤖🤖</p>
+    <div class="countscore">
+        <table style="margin-bottom:10px;">
+            <tr>
+            <th style = "background-color:lightblue;color:black;" colspan = "2">Score</th>
+            </tr>
+
+            <tr >
+                <td style = "margin-right:15px;">Human</td>   
+                <td>Machine</td> 
+            </tr>
+            <tr >
+                <td id = "humanScore" style="height:30px;text-align:center;"></td>   
+                <td id = "computerScore" style = "height:30px;text-align:center;"></td> 
+            </tr>
+        </table>
+    </div>
+    <div class= "playSpace" id = "playSpace"></div>
+    <div style="display:flex; gap:15px; margin-bottom:10px;">
+        <button class="button-19" role="button" id ="rock" style ="height:5em; width:7em;">Rock <br>🪨</button>
+        <button class="button-19" role="button" id = "paper" style ="height:5em; width:7em;">Paper <br>📃</button>
+        <button class="button-19" role="button" id = "scissor" style ="height:5em; width:7em;">Scissor <br> ✂️</button>
+        <button class="button-19" role="button" id = "clearLog" style ="height:5em; width:7em;">Reset</button>
+    </div>  
+
+    <button class="button-19" role="button" id = "roundOfFive" style ="height:3em; width:auto;">Play Best of Five</button>
+</div>
+
+
+
+        <script>
+        let rpsOptions = ["rock", "paper","scissor"];
+        let rpsResults = ["It's a tie","Computer wins","Human wins"];
+        let computerScoreCounter = 0;
+        let humanScoreCounter = 0;
+        let scoreHuman = document.createElement("span");
+        let scoreComputer = document.createElement("span");
+
+        const playSpace = document.querySelector('#playSpace');
+        const humanScore = document.querySelector('#humanScore');
+        const computerScore = document.querySelector('#computerScore')
+
+        function getComputerChoice(){
+            return rpsOptions[(Math.floor(Math.random() * 3 ))];
+        }
+
+        function playRound(playerSelection, computerSelection){
+            //logic for tie game.
+            if (playerSelection === computerSelection){
+                    let gameLogTie = document.createElement("p");
+                    gameLogTie.textContent = rpsResults[0] + ". "+ "Human chose " + playerSelection + ". Computer chose " + computerSelection;
+                    playSpace.appendChild(gameLogTie);
+                    
+            
+        }   else if(   
+            //logic for human win
+                    rpsOptions.indexOf(playerSelection) == 0 && rpsOptions.indexOf(computerSelection) == 2 || 
+                    rpsOptions.indexOf(playerSelection) == 1 && rpsOptions.indexOf(computerSelection) == 0 || 
+                    rpsOptions.indexOf(playerSelection) == 2  && rpsOptions.indexOf(computerSelection) == 1 ){
+                    let gameLogHumanWin = document.createElement("p");
+                    gameLogHumanWin.textContent = rpsResults[2] + ". "  + "Human chose " + playerSelection + ". " + "Computer chose " + computerSelection;
+                    playSpace.appendChild(gameLogHumanWin); 
+
+                    humanScoreCounter++;
+                    scoreHuman.textContent = humanScoreCounter;
+
+                    humanScore.appendChild(scoreHuman);
+        }   else{
+            //logic for computer win
+                    let gameLogComputerWin = document.createElement("p");
+                    gameLogComputerWin.textContent = rpsResults[1] + ". " + "Human chose " + playerSelection + ". " + "Computer chose" + " " + computerSelection;
+                    playSpace.appendChild(gameLogComputerWin);
+
+                    computerScoreCounter++; 
+                    scoreComputer.textContent = computerScoreCounter;
+                    computerScore.appendChild(scoreComputer);
+
+        }
+        }
+
+        function game(){
+            
+                if (computerScoreCounter == 3){
+                alert("Computer Wins Best of Five!!");
+                computerScoreCounter = 0;
+                humanScoreCounter = 0;
+            }else if(humanScoreCounter == 3){
+                alert("Human Wins Best of Five!!");
+                computerScoreCounter = 0;
+                humanScoreCounter = 0;
+            }
+                // for(let i = 0; i < 5 ; i++){
+                    
+                //     let result = playRound(prompt().toLowerCase(), getComputerChoice())
+                //     console.log(result);
+                //     if (result.includes(rpsResults[1]) ){
+                //         computerScore++;
+                //     }else if(result.includes(rpsResults[2])){
+                //         humanScore++;
+                //     }else{};
+                
+                // }
+                // if(computerScore > humanScore){
+                //     console.log("Computer wins, the score is " + computerScore + "computer, and " + humanScore + "human")
+                // }else if(humanScore > computerScore){
+                //     console.log("Human wins, the score is " + computerScore + "computer, and " + humanScore + "human")}
+                // else{console.log("It's a tie")}
+        }
+
+
+
+        //event listeners for rock, paper, scissor buttons. 
+        const rock = document.querySelector('#rock')
+        rock.addEventListener('click', () => playRound("rock",getComputerChoice()));
+        const paper = document.querySelector('#paper');
+        paper.addEventListener('click', () => playRound("paper",getComputerChoice()));
+        const scissor = document.querySelector('#scissor');
+        scissor.addEventListener('click', () => playRound("scissor",getComputerChoice()));
+
+        //event listeners for clearing the history and score
+        const clearLog = document.querySelector('#clearLog');
+        clearLog.addEventListener('click', () => playSpace.textContent="");
+        
+        clearLog.addEventListener('click', () => computerScore.textContent="");
+        clearLog.addEventListener('click', () => computerScoreCounter = 0);
+
+        clearLog.addEventListener('click', () => humanScore.textContent="");
+        clearLog.addEventListener('click', () => humanScoreCounter = 0);
+
+
+        const roundOfFive = document.querySelector("#roundOfFive")
+        roundOfFive.addEventListener('click', () => playSpace.textContent="");
+        roundOfFive.addEventListener('click', () => computerScore.textContent="");
+        roundOfFive.addEventListener('click', () => humanScore.textContent="");
+
+        roundOfFive.addEventListener('click', () => setInterval(game,1000));
+        roundOfFive.addEventListener('click', () => {
+        let gameOfFiveLog = document.createElement('p');
+        gameOfFiveLog.textContent = "You are now playing a best of five against machine 🤖😡";
+        gameOfFiveLog.style.cssText = 'color:red;';
+        playSpace.appendChild(gameOfFiveLog);} )
+        
+        
+
+
+    </script>
+</body>
+</html>
